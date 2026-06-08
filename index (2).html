@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Petualangan Matematika di Dunia Angka</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #0a0820;
+  --bg2:      #12103a;
+  --bg3:      #1e1b50;
+  --teal:     #00e5b8;
+  --teal2:    #00b894;
+  --pink:     #ff6b9d;
+  --pink2:    #e0547d;
+  --orange:   #ff9a3c;
+  --orange2:  #e07a20;
+  --purple:   #a855f7;
+  --purple2:  #8b3fd9;
+  --yellow:   #ffd23f;
+  --green:    #00e676;
+  --red:      #ff5252;
+  --white:    #ffffff;
+  --soft:     rgba(255,255,255,0.65);
+  --softer:   rgba(255,255,255,0.35);
+  --card:     rgba(255,255,255,0.05);
+  --card2:    rgba(255,255,255,0.09);
+  --border:   rgba(255,255,255,0.12);
+  --glow-t:   rgba(0,229,184,0.3);
+  --glow-p:   rgba(255,107,157,0.3);
+  --glow-o:   rgba(255,154,60,0.3);
+  --glow-y:   rgba(255,210,63,0.35);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body {
+  font-family:'Nunito',sans-serif;
+  background:var(--bg);
+  color:var(--white);
+  min-height:100vh;
+  overflow-x:hidden;
+  position:relative;
+}
+
+/* ─── STARFIELD ─── */
+.stars {
+  position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;
+}
+.star {
+  position:absolute;border-radius:50%;background:#fff;
+  animation:twinkle var(--d,3s) ease-in-out infinite;
+  animation-delay:var(--delay,0s);
+}
+@keyframes twinkle{0%,100%{opacity:.15;transform:scale(1)}50%{opacity:.9;transform:scale(1.4)}}
+
+/* ─── NEBULA blobs ─── */
+.nebula {
+  position:fixed;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0;
+  animation:drift 12s ease-in-out infinite alternate;
+}
+@keyframes drift{0%{transform:translate(0,0) scale(1)}100%{transform:translate(30px,20px) scale(1.08)}}
+
+/* ─── SCREENS ─── */
+.screen {
+  display:none;min-height:100vh;padding:20px;
+  position:relative;z-index:1;
+  flex-direction:column;align-items:center;justify-content:center;
+  animation:fadeUp .45s cubic-bezier(.22,1,.36,1);
+}
+.screen.active{display:flex;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+
+/* ─── CARD ─── */
+.card {
+  background:var(--card2);
+  border:1px solid var(--border);
+  border-radius:28px;
+  padding:36px 32px;
+  backdrop-filter:blur(20px);
+  width:100%;max-width:520px;
+  box-shadow:0 12px 50px rgba(0,0,0,.5);
+  position:relative;overflow:hidden;
+}
+.card::before {
+  content:'';position:absolute;inset:0;border-radius:28px;
+  background:linear-gradient(135deg,rgba(255,255,255,.06) 0%,transparent 60%);
+  pointer-events:none;
+}
+
+/* ─── LOGO / BRANDING ─── */
+.logo-top {
+  font-family:'Fredoka',cursive;font-size:1.1rem;font-weight:600;
+  color:var(--yellow);letter-spacing:.5px;text-align:center;
+  margin-bottom:6px;
+  text-shadow:0 0 20px var(--glow-y);
+}
+h1.main-title {
+  font-family:'Fredoka',cursive;font-size:2.1rem;font-weight:700;
+  color:var(--yellow);text-align:center;margin-bottom:6px;
+  text-shadow:0 0 30px var(--glow-y);
+  line-height:1.1;
+}
+h2.title {
+  font-family:'Fredoka',cursive;font-size:1.6rem;font-weight:600;
+  color:var(--yellow);text-align:center;margin-bottom:18px;
+  text-shadow:0 0 20px var(--glow-y);
+}
+.subtitle {
+  color:var(--soft);text-align:center;font-size:.9rem;margin-bottom:24px;line-height:1.6;
+}
+
+/* ─── ROBOT CHARACTER ─── */
+.robot-wrap {
+  width:100px;height:100px;margin:0 auto 18px;
+  animation:float 3.2s ease-in-out infinite;
+}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+
+/* ─── INPUTS ─── */
+label {
+  display:block;font-weight:700;font-size:.8rem;
+  color:var(--teal);margin-bottom:6px;text-transform:uppercase;letter-spacing:1.2px;
+}
+input[type=text],select {
+  width:100%;padding:14px 18px;border-radius:14px;
+  border:2px solid var(--border);
+  background:rgba(255,255,255,.06);
+  color:var(--white);
+  font-family:'Nunito',sans-serif;font-size:1rem;font-weight:600;
+  margin-bottom:20px;outline:none;
+  transition:border-color .25s,box-shadow .25s;
+}
+input[type=text]:focus,select:focus {
+  border-color:var(--teal);
+  box-shadow:0 0 0 3px rgba(0,229,184,.15);
+}
+select option{background:#1e1b50;}
+
+/* ─── BUTTONS ─── */
+.btn {
+  display:inline-block;padding:14px 30px;border-radius:50px;border:none;
+  font-family:'Fredoka',cursive;font-size:1.05rem;font-weight:600;
+  cursor:pointer;transition:transform .15s,box-shadow .15s,filter .15s;
+  letter-spacing:.5px;position:relative;overflow:hidden;
+}
+.btn::after {
+  content:'';position:absolute;inset:0;border-radius:50px;
+  background:rgba(255,255,255,0);transition:background .2s;
+}
+.btn:hover::after{background:rgba(255,255,255,.1);}
+.btn:hover{transform:translateY(-2px);}
+.btn:active{transform:scale(.97);}
+
+.btn-primary   { background:linear-gradient(135deg,var(--teal),var(--teal2)); color:#00261e; box-shadow:0 4px 24px var(--glow-t); width:100%;margin-bottom:10px; }
+.btn-secondary { background:rgba(255,255,255,.09); color:var(--white); border:1px solid var(--border); width:100%; }
+.btn-pink      { background:linear-gradient(135deg,var(--pink),var(--pink2)); color:#fff; box-shadow:0 4px 24px var(--glow-p); }
+.btn-orange    { background:linear-gradient(135deg,var(--orange),var(--orange2)); color:#fff; box-shadow:0 4px 24px var(--glow-o); }
+.btn-purple    { background:linear-gradient(135deg,var(--purple),var(--purple2)); color:#fff; box-shadow:0 0 24px rgba(168,85,247,.4); }
+.btn-yellow    { background:linear-gradient(135deg,var(--yellow),#f0b800); color:#3a2800; box-shadow:0 4px 24px var(--glow-y); }
+.btn-row       { display:flex;gap:10px;margin-top:12px; }
+.btn-row .btn  { flex:1; }
+
+/* ─── TOP BAR ─── */
+.topbar {
+  display:flex;align-items:center;gap:12px;
+  margin-bottom:20px;width:100%;max-width:520px;
+}
+.user-chip {
+  background:var(--card2);border:1px solid var(--border);
+  border-radius:30px;padding:7px 16px;
+  font-size:.85rem;font-weight:700;color:var(--teal);
+  display:flex;align-items:center;gap:7px;
+}
+.logo-small {
+  font-family:'Fredoka',cursive;font-size:1rem;font-weight:600;
+  color:var(--yellow);flex:1;text-align:right;
+}
+
+/* ─── TAG BADGE ─── */
+.tag {
+  display:inline-block;padding:4px 14px;border-radius:20px;
+  font-size:.73rem;font-weight:800;margin-bottom:16px;
+  text-transform:uppercase;letter-spacing:1.2px;
+}
+.tag-teal   { background:rgba(0,229,184,.15);color:var(--teal);border:1px solid rgba(0,229,184,.3); }
+.tag-pink   { background:rgba(255,107,157,.15);color:var(--pink);border:1px solid rgba(255,107,157,.3); }
+.tag-orange { background:rgba(255,154,60,.15);color:var(--orange);border:1px solid rgba(255,154,60,.3); }
+.tag-purple { background:rgba(168,85,247,.15);color:var(--purple);border:1px solid rgba(168,85,247,.3); }
+
+/* ─── MATERI BOX ─── */
+.materi-box {
+  background:rgba(0,229,184,.07);border:1px solid rgba(0,229,184,.2);
+  border-radius:18px;padding:20px;margin-bottom:16px;
+}
+.materi-box h3 {
+  font-family:'Fredoka',cursive;color:var(--teal);
+  margin-bottom:8px;font-size:1.1rem;font-weight:600;
+}
+.materi-box p{color:var(--soft);line-height:1.7;font-size:.92rem;}
+.materi-pink { background:rgba(255,107,157,.07)!important;border-color:rgba(255,107,157,.2)!important; }
+.materi-pink h3{color:var(--pink)!important;}
+.materi-orange { background:rgba(255,154,60,.07)!important;border-color:rgba(255,154,60,.2)!important; }
+.materi-orange h3{color:var(--orange)!important;}
+
+/* ─── TIP BOX ─── */
+.tip-box {
+  background:rgba(255,210,63,.07);border:1px solid rgba(255,210,63,.25);
+  border-radius:16px;padding:14px 18px;text-align:center;margin-bottom:18px;
+}
+.tip-box p{font-size:.83rem;color:var(--softer);margin-bottom:5px;}
+.tip-box strong{color:var(--yellow);font-size:.95rem;}
+
+/* ─── NUMBER BADGES ─── */
+.number-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+.num-badge {
+  width:40px;height:40px;border-radius:10px;display:flex;
+  align-items:center;justify-content:center;
+  font-family:'Fredoka',cursive;font-size:1rem;font-weight:600;
+  cursor:default;transition:transform .15s;
+}
+.num-badge:hover{transform:scale(1.2) rotate(-5deg);}
+.num-badge.even { background:linear-gradient(135deg,var(--teal),var(--teal2)); color:#00261e; }
+.num-badge.odd  { background:linear-gradient(135deg,var(--pink),var(--pink2)); color:#fff; }
+
+/* ─── MENU GRID ─── */
+.menu-grid { display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%;max-width:520px;margin-top:20px; }
+.menu-item {
+  background:var(--card);border:1px solid var(--border);
+  border-radius:22px;padding:24px 14px;text-align:center;
+  cursor:pointer;transition:transform .2s,box-shadow .2s,border-color .2s;
+  backdrop-filter:blur(10px);
+}
+.menu-item:hover{transform:translateY(-5px);}
+.menu-item .icon{font-size:2.5rem;margin-bottom:10px;display:block;}
+.menu-item h3{font-family:'Fredoka',cursive;font-size:.98rem;font-weight:600;color:var(--white);}
+.menu-item p{font-size:.75rem;color:var(--softer);margin-top:4px;}
+.m1{border-color:rgba(0,229,184,.3);}
+.m1:hover{border-color:var(--teal);box-shadow:0 8px 30px var(--glow-t);}
+.m2{border-color:rgba(255,107,157,.3);}
+.m2:hover{border-color:var(--pink);box-shadow:0 8px 30px var(--glow-p);}
+.m3{border-color:rgba(255,154,60,.3);}
+.m3:hover{border-color:var(--orange);box-shadow:0 8px 30px var(--glow-o);}
+.m4{border-color:rgba(168,85,247,.3);}
+.m4:hover{border-color:var(--purple);box-shadow:0 0 30px rgba(168,85,247,.3);}
+
+/* ─── FRUIT VISUAL ─── */
+.fruit-visual{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:14px 0;}
+.fruit {
+  font-size:2rem;cursor:pointer;transition:transform .2s,filter .2s;
+  filter:drop-shadow(0 3px 6px rgba(0,0,0,.4));
+}
+.fruit:hover{transform:scale(1.25) rotate(8deg);}
+.fruit.selected{filter:grayscale(.8) brightness(.5);transform:scale(.88);}
+
+/* ─── PENJUMLAHAN VISUAL ─── */
+#add-visual{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin-bottom:10px;}
+.penjum-controls{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:6px;}
+.penjum-controls .num{font-family:'Fredoka',cursive;font-size:1.8rem;}
+.penjum-controls .op{color:var(--softer);font-size:1.2rem;}
+.penjum-controls .result{color:var(--yellow);}
+.ctrl-btn{
+  background:rgba(0,229,184,.15);color:var(--teal);
+  border:1px solid rgba(0,229,184,.3);border-radius:10px;
+  padding:7px 14px;font-size:.9rem;cursor:pointer;transition:background .2s;
+  font-family:'Nunito',sans-serif;font-weight:700;
+}
+.ctrl-btn:hover{background:rgba(0,229,184,.3);}
+.ctrl-btn2{background:rgba(255,107,157,.15)!important;color:var(--pink)!important;border-color:rgba(255,107,157,.3)!important;}
+.ctrl-btn2:hover{background:rgba(255,107,157,.3)!important;}
+
+/* ─── QUIZ ─── */
+.quiz-progress{display:flex;gap:7px;justify-content:center;margin-bottom:20px;}
+.prog-dot{
+  width:11px;height:11px;border-radius:50%;
+  background:rgba(255,255,255,.18);transition:all .3s;
+}
+.prog-dot.done  { background:var(--teal);box-shadow:0 0 8px var(--glow-t); }
+.prog-dot.active{ background:var(--yellow);box-shadow:0 0 10px var(--glow-y);transform:scale(1.3); }
+
+.quiz-q{font-size:1rem;color:var(--white);line-height:1.65;text-align:center;margin-bottom:20px;}
+.quiz-visual{text-align:center;font-size:2.2rem;margin-bottom:18px;letter-spacing:3px;min-height:2.5rem;}
+.quiz-options{display:flex;flex-direction:column;gap:10px;margin-bottom:16px;}
+
+.opt-btn {
+  padding:14px 20px;border-radius:14px;
+  border:2px solid var(--border);
+  background:rgba(255,255,255,.05);
+  color:var(--white);
+  font-family:'Nunito',sans-serif;font-weight:700;font-size:.98rem;
+  cursor:pointer;text-align:left;
+  transition:all .2s;
+}
+.opt-btn:hover:not(:disabled){border-color:var(--teal);background:rgba(0,229,184,.1);}
+.opt-btn.correct { border-color:var(--green)!important;background:rgba(0,230,118,.12)!important; }
+.opt-btn.wrong   { border-color:var(--red)!important;background:rgba(255,82,82,.12)!important; }
+.opt-btn:disabled{cursor:not-allowed;}
+
+.quiz-feedback {
+  text-align:center;font-family:'Fredoka',cursive;font-size:1rem;
+  min-height:26px;margin-bottom:10px;line-height:1.5;
+}
+.fb-correct{color:var(--green);}
+.fb-wrong  {color:var(--red);}
+
+/* ─── SCORE ─── */
+.score-ring-wrap{margin:0 auto 20px;position:relative;width:130px;height:130px;}
+.score-ring{width:130px;height:130px;border-radius:50%;position:relative;
+  display:flex;align-items:center;justify-content:center;}
+.score-ring-bg {
+  position:absolute;inset:0;border-radius:50%;
+  background:conic-gradient(var(--teal) var(--pct,0%),rgba(255,255,255,.08) 0);
+  box-shadow:0 0 35px var(--glow-t);
+}
+.score-inner {
+  width:96px;height:96px;border-radius:50%;
+  background:var(--bg2);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  position:relative;z-index:1;
+}
+.score-num{font-family:'Fredoka',cursive;font-size:2rem;color:var(--yellow);}
+.score-denom{font-size:.7rem;color:var(--softer);}
+.score-msg{font-family:'Fredoka',cursive;font-size:1.25rem;text-align:center;color:var(--white);margin-bottom:6px;}
+.score-sub{font-size:.88rem;color:var(--soft);text-align:center;margin-bottom:22px;}
+.score-emoji{font-size:3.2rem;text-align:center;margin-bottom:22px;animation:bounce .7s ease infinite alternate;}
+@keyframes bounce{from{transform:translateY(0)}to{transform:translateY(-12px)}}
+
+/* ─── PROFIL ─── */
+.profil-avatar {
+  width:86px;height:86px;border-radius:50%;
+  background:linear-gradient(135deg,var(--teal),var(--purple));
+  display:flex;align-items:center;justify-content:center;
+  font-size:2.6rem;margin:0 auto 20px;
+  box-shadow:0 0 28px var(--glow-t);
+}
+.profil-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:12px 0;border-bottom:1px solid var(--border);font-size:.88rem;
+}
+.profil-row:last-of-type{border-bottom:none;}
+.profil-row span:first-child{color:var(--softer);}
+.profil-row span:last-child{font-weight:700;color:var(--teal);}
+
+/* ─── SPLASH / WELCOME ─── */
+.splash-emoji{font-size:5rem;text-align:center;margin-bottom:14px;animation:splashIn .6s cubic-bezier(.34,1.56,.64,1);}
+@keyframes splashIn{from{opacity:0;transform:scale(.3) rotate(-20deg)}to{opacity:1;transform:scale(1) rotate(0)}}
+.welcome-box {
+  background:rgba(255,210,63,.07);border:1px solid rgba(255,210,63,.22);
+  border-radius:16px;padding:18px;margin-bottom:20px;
+}
+.welcome-box p{color:var(--white);line-height:1.8;font-size:.93rem;text-align:center;}
+
+/* ─── DIVIDER ─── */
+.divider{height:1px;background:var(--border);margin:16px 0;}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:480px){
+  .card{padding:26px 20px;border-radius:22px;}
+  h1.main-title{font-size:1.7rem;}
+  h2.title{font-size:1.35rem;}
+}
+
+/* ─── PARTICLES (confetti on win) ─── */
+.confetti-piece {
+  position:fixed;pointer-events:none;z-index:999;
+  width:10px;height:10px;border-radius:2px;
+  animation:confettiFall var(--dur,2s) var(--delay,0s) ease-in forwards;
+}
+@keyframes confettiFall{
+  0%{transform:translateY(-20px) rotate(0) translateX(0);opacity:1;}
+  100%{transform:translateY(100vh) rotate(720deg) translateX(var(--drift,30px));opacity:0;}
+}
+
+/* ─── STREAK BADGE ─── */
+.streak-badge {
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(255,154,60,.15);border:1px solid rgba(255,154,60,.3);
+  border-radius:20px;padding:5px 12px;font-size:.82rem;color:var(--orange);font-weight:700;
+}
+
+/* ─── PROGRESS BAR ─── */
+.progress-wrap{background:rgba(255,255,255,.08);border-radius:20px;height:6px;margin-bottom:18px;overflow:hidden;}
+.progress-fill{height:100%;border-radius:20px;background:linear-gradient(90deg,var(--teal),var(--purple));transition:width .5s ease;}
+
+/* ─── PENJUMLAHAN NUMBER LINE ─── */
+.number-line {
+  display:flex;align-items:center;justify-content:center;
+  gap:0;margin:10px 0 4px;flex-wrap:wrap;
+}
+.nl-box {
+  width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+  font-family:'Fredoka',cursive;font-size:.9rem;font-weight:600;
+  border:1.5px solid var(--border);color:var(--softer);
+  transition:all .3s;
+}
+.nl-box.active-a{background:rgba(0,229,184,.25);border-color:var(--teal);color:var(--teal);}
+.nl-box.active-b{background:rgba(255,107,157,.25);border-color:var(--pink);color:var(--pink);}
+</style>
+</head>
+<body>
+
+<!-- ─── STARFIELD ─── -->
+<div class="stars" id="stars"></div>
+<div class="nebula" style="width:500px;height:500px;top:-150px;left:-150px;background:radial-gradient(circle,rgba(0,229,184,.12),transparent 70%);animation-duration:15s;"></div>
+<div class="nebula" style="width:400px;height:400px;bottom:-100px;right:-100px;background:radial-gradient(circle,rgba(168,85,247,.1),transparent 70%);animation-duration:18s;animation-delay:4s;"></div>
+<div class="nebula" style="width:300px;height:300px;top:40%;left:40%;background:radial-gradient(circle,rgba(255,107,157,.08),transparent 70%);animation-duration:20s;animation-delay:8s;"></div>
+
+<!-- ════════════════════════════════════════════════
+     SCREEN 1: LOGIN
+════════════════════════════════════════════════ -->
+<div class="screen active" id="s-login">
+  <div class="robot-wrap">
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <!-- antenna -->
+      <line x1="50" y1="8" x2="50" y2="20" stroke="#00e5b8" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="50" cy="6" r="5" fill="#ffd23f"/>
+      <!-- head -->
+      <rect x="22" y="18" width="56" height="42" rx="12" fill="#1e1b50" stroke="#00e5b8" stroke-width="2"/>
+      <!-- eyes -->
+      <circle cx="38" cy="34" r="7" fill="#00e5b8" opacity=".9"/>
+      <circle cx="62" cy="34" r="7" fill="#00e5b8" opacity=".9"/>
+      <circle cx="38" cy="34" r="3" fill="#0a0820"/>
+      <circle cx="62" cy="34" r="3" fill="#0a0820"/>
+      <circle cx="39.5" cy="32.5" r="1.2" fill="#fff"/>
+      <circle cx="63.5" cy="32.5" r="1.2" fill="#fff"/>
+      <!-- mouth -->
+      <path d="M38 48 Q50 56 62 48" stroke="#ffd23f" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <!-- ear bolts -->
+      <circle cx="22" cy="38" r="4" fill="#12103a" stroke="#00e5b8" stroke-width="1.5"/>
+      <circle cx="78" cy="38" r="4" fill="#12103a" stroke="#00e5b8" stroke-width="1.5"/>
+      <!-- body -->
+      <rect x="28" y="62" width="44" height="30" rx="10" fill="#1e1b50" stroke="#00e5b8" stroke-width="2"/>
+      <rect x="36" y="68" width="28" height="12" rx="6" fill="#0a0820" stroke="rgba(0,229,184,.3)" stroke-width="1"/>
+      <circle cx="43" cy="74" r="3" fill="#ffd23f" opacity=".9"/>
+      <circle cx="50" cy="74" r="3" fill="#00e5b8" opacity=".9"/>
+      <circle cx="57" cy="74" r="3" fill="#ff6b9d" opacity=".9"/>
+      <!-- arms -->
+      <rect x="10" y="62" width="16" height="8" rx="4" fill="#1e1b50" stroke="#00e5b8" stroke-width="1.5"/>
+      <rect x="74" y="62" width="16" height="8" rx="4" fill="#1e1b50" stroke="#00e5b8" stroke-width="1.5"/>
+    </svg>
+  </div>
+
+  <div class="card">
+    <p class="logo-top">⭐ Dunia Angka</p>
+    <h1 class="main-title">Petualangan<br>Matematika</h1>
+    <p class="subtitle">Masukkan identitasmu untuk memulai petualangan bersama Aris!</p>
+
+    <label for="inp-nama">👤 Nama Petualang</label>
+    <input type="text" id="inp-nama" placeholder="Ketik namamu di sini..." maxlength="30">
+
+    <label for="inp-kelas">🏫 Kelas</label>
+    <select id="inp-kelas">
+      <option value="">-- Pilih Kelas --</option>
+      <option value="1A">Kelas 1A</option>
+      <option value="1B">Kelas 1B</option>
+      <option value="1C">Kelas 1C</option>
+      <option value="1D">Kelas 1D</option>
+    </select>
+
+    <button class="btn btn-primary" onclick="doLogin()">🚀 Mulai Petualangan!</button>
+    <p style="text-align:center;color:var(--softer);font-size:.78rem;margin-top:8px;">SD Kelas 1 · STKIP Taman Siswa Bima · 2026</p>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     SCREEN 2: WELCOME
+════════════════════════════════════════════════ -->
+<div class="screen" id="s-welcome">
+  <div class="topbar">
+    <div class="user-chip">🤖 <span class="nama-fill">Petualang</span></div>
+    <div class="logo-small">⭐ Dunia Angka</div>
+  </div>
+  <div class="card">
+    <div class="splash-emoji">🌟</div>
+    <h2 class="title">Selamat Datang,<br><span id="display-nama" style="color:var(--teal)">Petualang</span>!</h2>
+    <div class="welcome-box">
+      <p>Halo Petualang! Di sini kamu akan membantu <strong style="color:var(--yellow)">Aris si Robot Angka</strong> 🤖 menyelamatkan <strong style="color:var(--teal)">Dunia Angka</strong> yang kacau akibat penyihir jahat.</p>
+      <br>
+      <p>Ayo pelajari rahasia angka <strong style="color:var(--pink)">ganjil</strong>, <strong style="color:var(--teal)">genap</strong>, penjumlahan, dan selesaikan misinya! ✨</p>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goTo('s-login')">◀ Kembali</button>
+      <button class="btn btn-primary" onclick="goTo('s-skkd')">Lanjut ▶</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     SCREEN 3: SKKD
+════════════════════════════════════════════════ -->
+<div class="screen" id="s-skkd">
+  <div class="topbar">
+    <div class="user-chip">🤖 <span class="nama-fill">Petualang</span></div>
+    <div class="logo-small">⭐ Dunia Angka</div>
+  </div>
+  <div class="card">
+    <span class="tag tag-teal">🎯 Misi Utama Kita</span>
+    <h2 class="title">Yang Akan Kita Pelajari</h2>
+
+    <div class="materi-box materi-pink">
+      <h3>🔢 Ganjil &amp; Genap</h3>
+      <p>Memahami konsep dasar bilangan ganjil dan genap melalui visualisasi objek interaktif yang seru!</p>
+    </div>
+    <div class="materi-box materi-orange">
+      <h3>➕➖ Hitung-Hitungan</h3>
+      <p>Melakukan operasi penjumlahan dan pengurangan dalam memecahkan masalah sederhana sehari-hari!</p>
+    </div>
+
+    <p style="font-size:.8rem;color:var(--softer);text-align:center;margin-bottom:8px;">Klik buah untuk berpasangan! 🍎</p>
+    <div class="fruit-visual" id="fruit-demo">
+      <span class="fruit" onclick="toggleFruit(this)">🍎</span>
+      <span class="fruit" onclick="toggleFruit(this)">🍎</span>
+      <span class="fruit" onclick="toggleFruit(this)">🍎</span>
+      <span class="fruit" onclick="toggleFruit(this)">🍎</span>
+      <span class="fruit" onclick="toggleFruit(this)">🍎</span>
+      <span class="fruit" onclick="toggleFruit(this)">🍎</span>
+      <span class="fruit" onclick="toggleFruit(this)">🍎</span>
+    </div>
+    <p id="fruit-label" style="font-size:.83rem;color:var(--yellow);font-weight:700;text-align:center;margin-bottom:16px;">7 buah apel = Ganjil! (ada 1 yang sendirian 😅)</p>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goTo('s-welcome')">◀ Kembali</button>
+      <button class="btn btn-primary" onclick="goTo('s-menu')">Ke Menu ▶</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     SCREEN 4: MENU
+════════════════════════════════════════════════ -->
+<div class="screen" id="s-menu">
+  <div class="topbar">
+    <div class="user-chip">🤖 <span class="nama-fill">Petualang</span></div>
+    <div class="logo-small">⭐ Dunia Angka</div>
+  </div>
+  <div style="text-align:center;margin-bottom:16px;width:100%;max-width:520px;">
+    <div class="streak-badge" id="streak-badge" style="display:none;">🔥 <span id="streak-txt">0</span> Jawaban Benar Beruntun!</div>
+    <h2 style="font-family:'Fredoka',cursive;font-size:1.5rem;color:var(--white);margin-top:10px;">Menu Petualangan</h2>
+    <p style="color:var(--softer);font-size:.88rem;">Pilih petualanganmu, <span class="nama-fill">Petualang</span>! 🗺️</p>
+  </div>
+  <div class="menu-grid">
+    <div class="menu-item m1" onclick="goTo('s-materi1')">
+      <span class="icon">🔢</span>
+      <h3>Angka Ganjil &amp; Genap</h3>
+      <p>Kenali perbedaannya!</p>
+    </div>
+    <div class="menu-item m2" onclick="goTo('s-materi2')">
+      <span class="icon">➕</span>
+      <h3>Penjumlahan Seru</h3>
+      <p>Hitung bersama Aris!</p>
+    </div>
+    <div class="menu-item m3" onclick="startQuiz()">
+      <span class="icon">⚔️</span>
+      <h3>Tantangan Evaluasi</h3>
+      <p>Uji kemampuanmu!</p>
+    </div>
+    <div class="menu-item m4" onclick="goTo('s-profil')">
+      <span class="icon">👨‍💻</span>
+      <h3>Info Pengembang</h3>
+      <p>Lihat profil tim!</p>
+    </div>
+  </div>
+  <button class="btn btn-secondary" style="margin-top:18px;max-width:520px;width:100%;" onclick="goTo('s-login')">🚪 Keluar</button>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     SCREEN 5: MATERI GANJIL GENAP
+════════════════════════════════════════════════ -->
+<div class="screen" id="s-materi1">
+  <div class="topbar">
+    <div class="user-chip">🤖 <span class="nama-fill">Petualang</span></div>
+    <div class="logo-small">⭐ Dunia Angka</div>
+  </div>
+  <div class="card">
+    <span class="tag tag-teal">📖 Materi 1</span>
+    <h2 class="title">Membedakan Ganjil &amp; Genap</h2>
+
+    <div class="materi-box">
+      <h3>🟢 Angka Genap</h3>
+      <p>Angka yang punya pasangan dan <strong style="color:var(--teal)">habis dibagi 2</strong>. Angka satuannya: 0, 2, 4, 6, atau 8.</p>
+      <div class="number-row">
+        <span class="num-badge even">2</span>
+        <span class="num-badge even">4</span>
+        <span class="num-badge even">6</span>
+        <span class="num-badge even">8</span>
+        <span class="num-badge even">10</span>
+        <span class="num-badge even">12</span>
+        <span class="num-badge even">20</span>
+      </div>
+    </div>
+
+    <div class="materi-box materi-pink">
+      <h3>🔴 Angka Ganjil</h3>
+      <p>Angka yang jika dipasangkan selalu ada <strong style="color:var(--pink)">1 yang sendirian</strong>. Angka satuannya: 1, 3, 5, 7, atau 9.</p>
+      <div class="number-row">
+        <span class="num-badge odd">1</span>
+        <span class="num-badge odd">3</span>
+        <span class="num-badge odd">5</span>
+        <span class="num-badge odd">7</span>
+        <span class="num-badge odd">9</span>
+        <span class="num-badge odd">11</span>
+        <span class="num-badge odd">13</span>
+      </div>
+    </div>
+
+    <div class="tip-box">
+      <p>💡 Trik Cepat Aris:</p>
+      <strong>Lihat angka paling belakang!<br>0,2,4,6,8 = Genap ✅ &nbsp;|&nbsp; 1,3,5,7,9 = Ganjil ❗</strong>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goTo('s-menu')">◀ Menu</button>
+      <button class="btn btn-primary" onclick="startQuiz()">Latihan Soal ▶</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     SCREEN 6: MATERI PENJUMLAHAN
+════════════════════════════════════════════════ -->
+<div class="screen" id="s-materi2">
+  <div class="topbar">
+    <div class="user-chip">🤖 <span class="nama-fill">Petualang</span></div>
+    <div class="logo-small">⭐ Dunia Angka</div>
+  </div>
+  <div class="card">
+    <span class="tag tag-pink">📖 Materi 2</span>
+    <h2 class="title">Penjumlahan &amp; Pengurangan</h2>
+
+    <div class="materi-box">
+      <h3>➕ Penjumlahan</h3>
+      <p>Menggabungkan dua kelompok benda menjadi satu kelompok yang lebih besar.</p>
+      <div id="add-visual" style="display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin:12px 0 6px;font-size:1.5rem;"></div>
+      <div class="penjum-controls">
+        <button class="ctrl-btn" onclick="changeAdd(-1)">−</button>
+        <span class="num penjum-a" style="color:var(--teal)" id="add-a">3</span>
+        <span class="op">+</span>
+        <span class="num" style="color:var(--pink)" id="add-b">4</span>
+        <span class="op">=</span>
+        <span class="num result" id="add-res">7</span>
+        <button class="ctrl-btn ctrl-btn2" onclick="changeAdd(1)">+</button>
+      </div>
+      <p style="font-size:.75rem;color:var(--softer);text-align:center;">Tekan +/− untuk ubah angka!</p>
+    </div>
+
+    <div class="materi-box materi-orange">
+      <h3>➖ Pengurangan</h3>
+      <p>Mengambil sebagian benda dari kelompok sehingga jumlahnya berkurang.</p>
+      <div style="text-align:center;margin-top:12px;">
+        <p style="font-family:'Fredoka',cursive;font-size:1.3rem;color:var(--orange);">
+          10 🍎 − 4 🍎 = <span style="color:var(--yellow)">6 🍎</span>
+        </p>
+        <p style="font-size:.8rem;color:var(--softer);margin-top:6px;">Aris punya 10 apel, diberikan 4. Sisa 6!</p>
+      </div>
+    </div>
+
+    <div class="tip-box">
+      <p>💡 Ingat!</p>
+      <strong>Penjumlahan = makin banyak ➕<br>Pengurangan = makin sedikit ➖</strong>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goTo('s-menu')">◀ Menu</button>
+      <button class="btn btn-primary" onclick="startQuiz()">Latihan Soal ▶</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     SCREEN 7: QUIZ
+════════════════════════════════════════════════ -->
+<div class="screen" id="s-quiz">
+  <div class="topbar">
+    <div class="user-chip">🤖 <span class="nama-fill">Petualang</span></div>
+    <div class="logo-small">⭐ Dunia Angka</div>
+  </div>
+  <div class="card">
+    <span class="tag tag-orange">⚔️ Tantangan</span>
+    <h2 class="title">Tantangan Dunia Angka!</h2>
+
+    <div class="progress-wrap"><div class="progress-fill" id="quiz-progress-bar" style="width:0%"></div></div>
+    <div class="quiz-progress" id="quiz-progress"></div>
+
+    <div class="quiz-q" id="quiz-question"></div>
+    <div class="quiz-visual" id="quiz-visual"></div>
+    <div class="quiz-options" id="quiz-options"></div>
+    <div class="quiz-feedback" id="quiz-feedback"></div>
+
+    <button class="btn btn-primary" id="btn-next" style="display:none;" onclick="nextQuestion()">Lanjut ▶</button>
+    <button class="btn btn-secondary" onclick="goTo('s-menu')">🏠 Ke Menu</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     SCREEN 8: SKOR
+════════════════════════════════════════════════ -->
+<div class="screen" id="s-skor">
+  <div class="card" style="text-align:center;max-width:420px;">
+    <h2 class="title">🏆 Skor Petualanganmu!</h2>
+
+    <div class="score-ring-wrap">
+      <div class="score-ring">
+        <div class="score-ring-bg" id="score-ring-bg"></div>
+        <div class="score-inner">
+          <span class="score-num" id="skor-display">80</span>
+          <span class="score-denom">/ 100</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="score-emoji" id="skor-emoji">🎉</div>
+    <div class="score-msg" id="skor-msg">Hebat!</div>
+    <div class="score-sub" id="skor-sub">Kamu berhasil menjawab 4 dari 5 soal!</div>
+
+    <button class="btn btn-yellow" style="width:100%;margin-bottom:10px;" onclick="startQuiz()">🔄 Coba Lagi!</button>
+    <button class="btn btn-secondary" onclick="goTo('s-menu')">🏠 Kembali ke Menu</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     SCREEN 9: PROFIL
+════════════════════════════════════════════════ -->
+<div class="screen" id="s-profil">
+  <div class="topbar">
+    <div class="user-chip">🤖 <span class="nama-fill">Petualang</span></div>
+    <div class="logo-small">⭐ Dunia Angka</div>
+  </div>
+  <div class="card">
+    <div class="profil-avatar">🤖</div>
+    <h2 class="title">Profil Pengembangan Multimedia</h2>
+
+    <div class="profil-row"><span>Kelompok</span><span>Tim Kreatif Edukasi</span></div>
+    <div class="profil-row"><span>Anggota</span>
+      <span style="text-align:right;font-size:.78rem;line-height:1.7;">
+        Algi · Azizah · Kayla · Putri · Rangga
+      </span>
+    </div>
+    <div class="profil-row"><span>Program Studi</span><span>Pendidikan Teknologi Informasi</span></div>
+    <div class="profil-row"><span>Institusi</span><span>STKIP Taman Siswa Bima</span></div>
+    <div class="profil-row"><span>Tahun Rilis</span><span style="color:var(--yellow)">2026</span></div>
+    <div class="profil-row"><span>Kontak &amp; Feedback</span><span style="font-size:.75rem;">azizah111518@gmail.com</span></div>
+
+    <div class="btn-row" style="margin-top:20px;">
+      <button class="btn btn-primary" onclick="goTo('s-menu')">◀ Kembali ke Menu</button>
+      <button class="btn btn-secondary" onclick="goTo('s-login')">🚪 Keluar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════════════════ -->
+<script>
+// ─── STATE ───────────────────────────────────────
+let userName = 'Petualang';
+let userKelas = '';
+let addA = 3, addB = 4;
+let quizQuestions = [];
+let currentQ = 0;
+let score = 0;
+let streak = 0;
+let bestStreak = 0;
+let answered = false;
+
+// ─── STARFIELD ───────────────────────────────────
+(function(){
+  const container = document.getElementById('stars');
+  for(let i=0;i<90;i++){
+    const s = document.createElement('div');
+    s.className = 'star';
+    const size = Math.random()*2.5+.5;
+    s.style.cssText = `
+      left:${Math.random()*100}%;
+      top:${Math.random()*100}%;
+      width:${size}px;height:${size}px;
+      --d:${2+Math.random()*4}s;
+      --delay:${-Math.random()*5}s;
+      opacity:${.1+Math.random()*.5};
+    `;
+    container.appendChild(s);
+  }
+})();
+
+// ─── NAVIGATION ──────────────────────────────────
+function goTo(id) {
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+  document.querySelectorAll('.nama-fill').forEach(el=>el.textContent=userName);
+
+  if(id==='s-materi2') renderAddVisual();
+  if(id==='s-menu') {
+    const b = document.getElementById('streak-badge');
+    const t = document.getElementById('streak-txt');
+    if(bestStreak >= 3){ b.style.display='inline-flex'; t.textContent=bestStreak; }
+    else { b.style.display='none'; }
+  }
+}
+
+// ─── LOGIN ───────────────────────────────────────
+function doLogin(){
+  const n = document.getElementById('inp-nama').value.trim();
+  const k = document.getElementById('inp-kelas').value;
+  if(!n){ shakeInput('inp-nama'); return; }
+  if(!k){ shakeInput('inp-kelas'); return; }
+  userName = n; userKelas = k;
+  document.getElementById('display-nama').textContent = n;
+  document.querySelectorAll('.nama-fill').forEach(el=>el.textContent=n);
+  goTo('s-welcome');
+}
+
+function shakeInput(id){
+  const el = document.getElementById(id);
+  el.style.borderColor = 'var(--red)';
+  el.style.animation = 'shake .4s ease';
+  if(!document.getElementById('shakeKF')){
+    const st = document.createElement('style');
+    st.id='shakeKF';
+    st.textContent='@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}';
+    document.head.appendChild(st);
+  }
+  setTimeout(()=>{el.style.animation='';el.style.borderColor='';},500);
+}
+
+// ─── FRUIT DEMO ───────────────────────────────────
+function toggleFruit(el){
+  el.classList.toggle('selected');
+  const fruits = document.querySelectorAll('#fruit-demo .fruit');
+  const selected = document.querySelectorAll('#fruit-demo .fruit.selected').length;
+  const lbl = document.getElementById('fruit-label');
+  const total = fruits.length;
+  if(selected===0){
+    lbl.textContent = total + ' buah apel = ' + (total%2===0 ? 'Genap! (semua berpasangan ✅)' : 'Ganjil! (ada 1 yang sendirian 😅)');
+  } else {
+    const remain = total-selected;
+    lbl.textContent = 'Sisa '+remain+' apel = '+(remain%2===0 ? 'Genap ✅' : 'Ganjil 😅');
+  }
+}
+
+// ─── ADDITION VISUAL ────────────────────────────
+function renderAddVisual(){
+  const el = document.getElementById('add-visual');
+  if(!el) return;
+  el.innerHTML='';
+  for(let i=0;i<addA;i++){
+    const s=document.createElement('span');s.textContent='🍎';s.style.fontSize='1.4rem';el.appendChild(s);
+  }
+  const plus=document.createElement('span');plus.textContent='➕';plus.style.cssText='font-size:1.1rem;margin:0 4px;';el.appendChild(plus);
+  for(let i=0;i<addB;i++){
+    const s=document.createElement('span');s.textContent='⭐';s.style.fontSize='1.4rem';el.appendChild(s);
+  }
+  document.getElementById('add-a').textContent=addA;
+  document.getElementById('add-b').textContent=addB;
+  document.getElementById('add-res').textContent=addA+addB;
+}
+
+function changeAdd(dir){
+  addA=Math.max(1,Math.min(9,addA+dir));
+  addB=Math.max(1,Math.min(9,addB+(dir<0?1:-1)+Math.floor(Math.random()*2)));
+  addB=Math.max(1,Math.min(9,addB));
+  renderAddVisual();
+}
+
+// ─── QUIZ DATA ───────────────────────────────────
+const allQuestions = [
+  {
+    q:'Aris si Robot punya 7 buah apel 🍎. Apakah 7 itu Ganjil atau Genap?',
+    visual:'🍎🍎🍎🍎🍎🍎🍎',
+    opts:['A. Ganjil','B. Genap'],
+    ans:0,
+    explain:'7 adalah Ganjil karena angka satuannya 7. Ada 1 apel yang sendirian!'
+  },
+  {
+    q:'Bintang ajaib di Dunia Angka ada 12 ⭐. Apakah 12 itu Ganjil atau Genap?',
+    visual:'⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐',
+    opts:['A. Ganjil','B. Genap'],
+    ans:1,
+    explain:'12 adalah Genap karena angka satuannya 2, dan semua bisa berpasangan!'
+  },
+  {
+    q:'Aris punya 5 🍊 dan teman memberi 3 🍊 lagi. Berapa total jeruk Aris?',
+    visual:'🍊🍊🍊🍊🍊 ➕ 🍊🍊🍊',
+    opts:['A. 7','B. 8','C. 9'],
+    ans:1,
+    explain:'5 + 3 = 8. Selamat, kamu berhasil membantu Aris! 🎉'
+  },
+  {
+    q:'Aris punya 10 🌟 tapi dipakai 4 🌟 untuk mengalahkan penyihir. Berapa sisa bintang Aris?',
+    visual:'🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟',
+    opts:['A. 5','B. 6','C. 7'],
+    ans:1,
+    explain:'10 − 4 = 6. Aris masih punya 6 bintang! ✨'
+  },
+  {
+    q:'Angka manakah yang GENAP?',
+    visual:'🤔',
+    opts:['A. 15','B. 21','C. 28','D. 33'],
+    ans:2,
+    explain:'28 adalah Genap karena angka satuannya 8. Ingat trik Aris: 0,2,4,6,8 = Genap!'
+  },
+  {
+    q:'Berapa 4 + 6 = ?',
+    visual:'🍏🍏🍏🍏 ➕ 🍏🍏🍏🍏🍏🍏',
+    opts:['A. 9','B. 10','C. 11'],
+    ans:1,
+    explain:'4 + 6 = 10. Bagus, kamu pintar berhitung! 🌟'
+  },
+  {
+    q:'Angka 9 termasuk angka apa?',
+    visual:'🌸🌸🌸🌸🌸🌸🌸🌸🌸',
+    opts:['A. Genap','B. Ganjil'],
+    ans:1,
+    explain:'9 adalah Ganjil karena angka satuannya 9 (1,3,5,7,9 = Ganjil)!'
+  },
+  {
+    q:'Ibu punya 8 kue 🍰. Dimakan 3. Berapa sisa kue ibu?',
+    visual:'🍰🍰🍰🍰🍰🍰🍰🍰',
+    opts:['A. 4','B. 5','C. 6'],
+    ans:1,
+    explain:'8 − 3 = 5. Masih banyak kue! 😋'
+  }
+];
+
+// ─── QUIZ FUNCTIONS ──────────────────────────────
+function startQuiz(){
+  quizQuestions = [...allQuestions].sort(()=>Math.random()-.5).slice(0,5);
+  currentQ=0; score=0; answered=false;
+  renderQuestion();
+  goTo('s-quiz');
+}
+
+function renderQuestion(){
+  const q = quizQuestions[currentQ];
+  answered=false;
+
+  // progress bar
+  document.getElementById('quiz-progress-bar').style.width = ((currentQ/quizQuestions.length)*100)+'%';
+
+  // dots
+  const prog=document.getElementById('quiz-progress');
+  prog.innerHTML='';
+  for(let i=0;i<quizQuestions.length;i++){
+    const d=document.createElement('div');
+    d.className='prog-dot'+(i<currentQ?' done':i===currentQ?' active':'');
+    prog.appendChild(d);
+  }
+
+  document.getElementById('quiz-question').innerHTML =
+    `<strong style="color:var(--yellow);font-size:.82rem;">Pertanyaan ${currentQ+1} dari ${quizQuestions.length}</strong><br><br>${q.q}`;
+  document.getElementById('quiz-visual').textContent=q.visual;
+
+  const opts=document.getElementById('quiz-options');
+  opts.innerHTML='';
+  q.opts.forEach((opt,i)=>{
+    const btn=document.createElement('button');
+    btn.className='opt-btn';btn.textContent=opt;
+    btn.onclick=()=>selectAnswer(i,btn);
+    opts.appendChild(btn);
+  });
+
+  document.getElementById('quiz-feedback').textContent='';
+  document.getElementById('quiz-feedback').className='quiz-feedback';
+  document.getElementById('btn-next').style.display='none';
+}
+
+function selectAnswer(idx,btn){
+  if(answered)return;
+  answered=true;
+  const q=quizQuestions[currentQ];
+  document.querySelectorAll('.opt-btn').forEach(b=>b.disabled=true);
+
+  const fb=document.getElementById('quiz-feedback');
+  if(idx===q.ans){
+    btn.classList.add('correct');
+    score++; streak++;
+    if(streak>bestStreak)bestStreak=streak;
+    fb.textContent='✅ Benar! '+q.explain;
+    fb.className='quiz-feedback fb-correct';
+  } else {
+    btn.classList.add('wrong');
+    document.querySelectorAll('.opt-btn')[q.ans].classList.add('correct');
+    streak=0;
+    fb.textContent='❌ Kurang tepat. '+q.explain;
+    fb.className='quiz-feedback fb-wrong';
+  }
+
+  document.getElementById('btn-next').style.display='block';
+  document.getElementById('btn-next').textContent =
+    currentQ<quizQuestions.length-1 ? 'Lanjut ▶' : '📊 Lihat Skor';
+}
+
+function nextQuestion(){
+  currentQ++;
+  if(currentQ>=quizQuestions.length) showScore();
+  else renderQuestion();
+}
+
+function showScore(){
+  const total=quizQuestions.length;
+  const pct=Math.round((score/total)*100);
+
+  document.getElementById('skor-display').textContent=pct;
+  const ring=document.getElementById('score-ring-bg');
+  ring.style.setProperty('--pct','0%');
+  setTimeout(()=>ring.style.cssText=`--pct:${pct}%;transition:--pct 1.5s ease;`,100);
+  // workaround since CSS custom property transitions don't always work
+  animateRing(0,pct,1500);
+
+  let msg,sub,emoji;
+  if(pct===100){msg='🏆 LUAR BIASA! Sempurna!';sub='Kamu berhasil menjawab semua soal dengan benar!';emoji='🎊';}
+  else if(pct>=80){msg='🎉 Hebat! Hampir Sempurna!';sub=`Kamu berhasil menjawab ${score} dari ${total} soal!`;emoji='🥈';}
+  else if(pct>=60){msg='👍 Bagus! Terus Berlatih!';sub=`Kamu berhasil menjawab ${score} dari ${total} soal!`;emoji='⭐';}
+  else {msg='💪 Jangan Menyerah!';sub=`Kamu menjawab ${score} dari ${total} soal. Coba lagi ya!`;emoji='🤖';}
+
+  document.getElementById('skor-msg').textContent=msg;
+  document.getElementById('skor-sub').textContent=sub;
+  document.getElementById('skor-emoji').textContent=emoji;
+
+  goTo('s-skor');
+  if(pct>=80) launchConfetti();
+}
+
+function animateRing(from,to,duration){
+  const ring=document.getElementById('score-ring-bg');
+  const start=performance.now();
+  function step(ts){
+    const elapsed=ts-start;
+    const progress=Math.min(elapsed/duration,1);
+    const eased=1-Math.pow(1-progress,3);
+    const current=from+eased*(to-from);
+    ring.style.background=`conic-gradient(var(--teal) ${current}%,rgba(255,255,255,.08) 0)`;
+    if(progress<1)requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+// ─── CONFETTI ────────────────────────────────────
+function launchConfetti(){
+  const colors=['#ffd23f','#00e5b8','#ff6b9d','#a855f7','#ff9a3c','#00e676'];
+  for(let i=0;i<60;i++){
+    const p=document.createElement('div');
+    p.className='confetti-piece';
+    p.style.cssText=`
+      left:${10+Math.random()*80}%;
+      top:-10px;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      transform:rotate(${Math.random()*360}deg);
+      --dur:${1.5+Math.random()*1.5}s;
+      --delay:${Math.random()*.8}s;
+      --drift:${-60+Math.random()*120}px;
+      border-radius:${Math.random()>0.5?'50%':'2px'};
+    `;
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(),(2.5)*1000);
+  }
+}
+
+// ─── INIT ─────────────────────────────────────────
+renderAddVisual();
+</script>
+</body>
+</html>
